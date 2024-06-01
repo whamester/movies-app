@@ -1,5 +1,7 @@
 # Movies App
 
+<img src="[http://....jpg](https://github.com/whamester/movies-app/assets/57273227/01596669-2146-4178-bc93-451e084d6a63)" height="200" />
+
 
 ![image](https://github.com/whamester/movies-app/assets/57273227/01596669-2146-4178-bc93-451e084d6a63)
 
