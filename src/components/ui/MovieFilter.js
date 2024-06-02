@@ -17,6 +17,7 @@ const MovieFilter = ({
   options,
   renderFilter,
   onChange,
+  error,
 }) => {
   const bottomSheetRef = useRef(null);
   const [index, setIndex] = useState(-1);
@@ -30,7 +31,10 @@ const MovieFilter = ({
             renderFilter(
               <TextInput
                 value={selected}
-                style={styles.dropdown}
+                style={{
+                  ...styles.dropdown,
+                  ...(!!error ? styles.dropdownError : {}),
+                }}
                 onPress={() => {
                   setIndex(0);
                 }}
@@ -96,7 +100,6 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     display: "flex",
     gap: 20,
-    // flex: 1,
   },
   filters: {
     display: "flex",
@@ -110,6 +113,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     flex: 1,
+  },
+  dropdownError: {
+    borderWidth: 1,
+    borderColor: "red",
   },
   dropdownItemSelected: {
     backgroundColor: colors.darkBlue,

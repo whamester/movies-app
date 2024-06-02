@@ -1,14 +1,8 @@
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import colors from "../../config/colors";
+import Button from "../ui/Button";
 
 const MovieCard = ({ image, title, popularity, releaseDate, onClick }) => {
-
   return (
     <View style={styles.container}>
       <Image
@@ -21,9 +15,7 @@ const MovieCard = ({ image, title, popularity, releaseDate, onClick }) => {
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.popularity}>Popularity: {popularity}</Text>
         <Text style={styles.releaseDate}>Release Date: {releaseDate}</Text>
-        <TouchableHighlight style={styles.button} onPress={onClick}>
-          <Text style={styles.buttonText}>More Details</Text>
-        </TouchableHighlight>
+        <Button onPress={onClick}>More Details</Button>
       </View>
     </View>
   );
@@ -58,19 +50,6 @@ const styles = StyleSheet.create({
   releaseDate: {
     fontSize: 12,
     color: colors.gray,
-  },
-  button: {
-    backgroundColor: colors.darkBlue,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 8,
-    width: "100%",
-    borderRadius: 4,
-  },
-  buttonText: {
-    fontSize: 14,
-    color: colors.white,
   },
 });
 

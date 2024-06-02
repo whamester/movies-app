@@ -1,14 +1,16 @@
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, TextInput, View } from "react-native";
 import MovieFilter from "../ui/MovieFilter";
 import MoviesList from "../lists/MoviesList";
 import colors from "../../config/colors";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { searchMovies } from "../../services/movies";
+import Button from "../ui/Button";
 
 const filterOptions = ["multi", "movie", "tv"];
 
 const SearchResultsContainer = ({ navigation }) => {
   const [category, setCategory] = useState(filterOptions[0]);
+  const [error, setError] = useState();
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
@@ -21,11 +23,22 @@ const SearchResultsContainer = ({ navigation }) => {
     setTotalPages(data.total_pages ?? undefined);
   };
 
+  const onSearchClick = useCallback(() => {
+    if (!query || !category) {
+      setError("Movie/TV show name is required");
+      return;
+    }
+
+    setError();
+    getData(category, query);
+  }, [category, query]);
+
   return (
     <View style={{ flex: 1 }}>
       <MovieFilter
         options={filterOptions}
         onChange={setCategory}
+        error={error}
         renderFilter={(filter) => {
           return (
             <View style={styles.filter}>
@@ -33,19 +46,21 @@ const SearchResultsContainer = ({ navigation }) => {
               <TextInput
                 value={query}
                 placeholder="i.e. James Bond, CSI"
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  ...(!!error ? styles.inputError : {}),
+                }}
                 onChangeText={setQuery}
               />
               <Text>Choose Search Type * </Text>
               <View style={styles.filterButtonContainer}>
-                {filter}
-                <Button
-                  title="Search"
-                  onPress={() => {
-                    getData(category, query);
-                  }}
-                />
+                <View style={{ flex: 1 }}>{filter}</View>
+
+                <Button onPress={onSearchClick}>Search</Button>
               </View>
+              <Text style={{ display: error ? "flex" : "none", color: "red" }}>
+                {error}
+              </Text>
             </View>
           );
         }}
@@ -75,6 +90,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lightGray,
     padding: 6,
     borderRadius: 4,
+  },
+  inputError: {
+    borderWidth: 1,
+    borderColor: "red",
   },
   filter: {
     width: "100%",
